@@ -64,6 +64,7 @@
     <button id="yesBtn">Evet</button>
     <button id="noBtn">Hayır</button>
 </div>
+
 <div id="consentModal" style="
     display:none;
     position:fixed;
@@ -109,6 +110,7 @@
     const yesBtn = document.getElementById("yesBtn");
     const question = document.getElementById("question");
 
+    const phone = "905387149405"; // başında 0 YOK
     let noCount = 0;
 
     const noTexts = [
@@ -127,38 +129,30 @@
         noBtn.style.top = y + "px";
 
         question.textContent = noTexts[noCount];
-        noCount++;
-
-        if (noCount >= noTexts.length) {
-            noCount = 0;
-        }
+        noCount = (noCount + 1) % noTexts.length;
     });
 
-    <script>
-const phone = "905387149405"; // başında 0 YOK
+    yesBtn.addEventListener("click", () => {
+        document.getElementById("consentModal").style.display = "flex";
+    });
 
-yesBtn.addEventListener("click", () => {
-    document.getElementById("consentModal").style.display = "flex";
-});
+    document.getElementById("consentBtn").addEventListener("click", () => {
+        const check = document.getElementById("consentCheck");
 
-document.getElementById("consentBtn").addEventListener("click", () => {
-    const check = document.getElementById("consentCheck");
+        if (!check.checked) {
+            alert("Devam etmek için onay vermelisin.");
+            return;
+        }
 
-    if (!check.checked) {
-        alert("Devam etmek için onay vermelisin.");
-        return;
-    }
+        const message = encodeURIComponent("Kabul edildi");
 
-    const message = encodeURIComponent("Kabul edildi");
+        window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
 
-    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
-
-    question.textContent = "Kabul edildi 💖";
-    noBtn.style.display = "none";
-    yesBtn.style.display = "none";
-    document.getElementById("consentModal").style.display = "none";
-});
-
+        question.textContent = "Kabul edildi 💖";
+        noBtn.style.display = "none";
+        yesBtn.style.display = "none";
+        document.getElementById("consentModal").style.display = "none";
+    });
 </script>
 
 </body>
